@@ -16,7 +16,7 @@ None
 - Permission: You are free to change and redistribute this script as per the terms of the GPL.
 
 ## Links
-- GitHub Repository: [Time-Zone](https://github.com/calvin-quint/Time-Zone)
+- GitHub Repository: [Time-Zone](https://github.com/calvin-quint/Public/tree/main/Time-Zone)
 
 ## Contact
 - Contact Email: github@myqnet.io
