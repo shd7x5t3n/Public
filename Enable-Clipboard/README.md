@@ -13,7 +13,7 @@ Before executing the script, ensure you have the necessary permissions to modify
 - **File Name:** Enable-Clipboard.ps1
 - **Author:** Calvin Quint
 - **License:** GNU GPL
-- **GitHub Repository:** [[[https://github.com/calvin-quint/Enable-Clipboard](https://github.com/calvin-quint/Public/tree/main/Enable-Clipboard)]
+- **GitHub Repository:** [[[https://github.com/calvin-quint/Enable-Clipboard]([https://github.com/calvin-quint/Public/tree/main/Enable-Clipboard](https://github.com/calvin-quint/Public/tree/main/Enable-Clipboard))]
 - **Contact Email:** github@myqnet.io
 
 ## Parameters
