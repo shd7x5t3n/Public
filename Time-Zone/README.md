@@ -10,7 +10,7 @@ This script changes the registry to give users access to change location service
 None
 
 ## Notes
-- File Name: Time-Zone.ps1
+- File Name: main.ps1
 - Author: Calvin Quint
 - License: GNU GPL
 - Permission: You are free to change and redistribute this script as per the terms of the GPL.
