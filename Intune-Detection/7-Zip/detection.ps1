@@ -24,26 +24,22 @@ if ($7Zip) {
         $UninstallCommand = "msiexec /x `"$($7ZipProductCode)`" /qn"
         
         # Attempt to uninstall 7-Zip
-        $uninstallResult = Invoke-Expression -Command $UninstallCommand
+        $process = Start-Process -FilePath msiexec.exe -ArgumentList "/x", "$($7ZipProductCode)", "/qn" -PassThru -Wait
         
-        # Check  ion was successful
-        if ($LASTEXITCODE -eq 0) {
+        # Check if uninstallation was successful
+        if ($process.ExitCode -eq 0) {
             Write-Output "7-Zip version $Version has been uninstalled."
             exit 0  # Exit with success code
-            $LASTEXITCODE = 0
         } else {
-            Write-Output "Failed to uninstall 7-Zip. Exit code: $LASTEXITCODE"
+            Write-Output "Failed to uninstall 7-Zip. Exit code: $($process.ExitCode)"
             exit 1  # Exit with failure code
-            $LASTEXITCODE = 1
         }
     } else {
         Write-Output "No action required. 7-Zip version meets minimum requirement."
         exit 0  # Exit with success code
-        $LASTEXITCODE = 0
     }
 } else {
     # If 7-Zip is not found
     Write-Output "7-Zip is not installed."
     exit 1  # Exit with failure code
-    $LASTEXITCODE = 1
 }
