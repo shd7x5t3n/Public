@@ -1,25 +1,29 @@
 # Define the name of the 7-Zip installer file
-$InstallerFile = "7zSetup.msi"
+$InstallerFile = "7z1900-x64.msi"
+
+# Get the current directory
+$CurrentDirectory = Get-Location
 
 # Check if the installer exists in the current directory
-if (-Not (Test-Path -Path $InstallerFile)) {
-    Write-Output "7-Zip installer not found in the current directory: $InstallerFile"
+$InstallerPath = "$CurrentDirectory\$InstallerFile"
+if (-Not (Test-Path -Path $InstallerPath)) {
+    Write-Output "7-Zip installer not found in the current directory: $CurrentDirectory"
     exit 1  # Exit with failure code
 }
 
-# Define the installation command
-$InstallCommand = "msiexec /i `"$PSScriptRoot\$InstallerFile`" /qn"
+# Define the installation arguments
+$InstallArguments = "/i `"$InstallerPath`" /qn"
 
-Write-Output "Installing 7-Zip from $PSScriptRoot\$InstallerFile..."
+Write-Output "Installing 7-Zip from $InstallerPath..."
 
 # Attempt to install 7-Zip
-$installResult = Invoke-Expression -Command $InstallCommand
+$process = Start-Process -FilePath msiexec.exe -ArgumentList $InstallArguments -PassThru -Wait
 
 # Check if installation was successful
-if ($LASTEXITCODE -eq 0) {
+if ($process.ExitCode -eq 0) {
     Write-Output "7-Zip has been installed successfully."
     exit 0  # Exit with success code
 } else {
-    Write-Output "Failed to install 7-Zip. Exit code: $LASTEXITCODE"
+    Write-Output "Failed to install 7-Zip. Exit code: $($process.ExitCode)"
     exit 1  # Exit with failure code
 }
