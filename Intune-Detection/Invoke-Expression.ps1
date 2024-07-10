@@ -1,27 +1,3 @@
-<#
-.SYNOPSIS
-    This script is a detection script used with app installation through intune, if older version is detected, it is removed and the current version 
-    
-.DESCRIPTION
-      This PowerShell script automates the process changing the registry keys to enable the Windows Clipboard
-    
-.PARAMETER 
-   
-    
-.NOTES
-    File Name      : Enable-Clipboard.ps1
-    Author         : Calvin Quint
-    License        : GNU GPL
-    Permission     : You are free to change and re-distribute this script as per the terms of the GPL.
-    
-.LINK
-    GitHub Repository: https://github.com/calvin-quint/Public/tree/main/Intune-Detection
-    
-.EMAIL
-    Contact email: github@myqnet.io
-    
-#>
-
 # Set the minimum version required for 7-Zip
 $MinimumVersion = '23.01.00.0'
 
