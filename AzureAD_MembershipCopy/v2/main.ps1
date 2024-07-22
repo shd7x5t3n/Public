@@ -1,7 +1,7 @@
 # Include necessary scripts
-. ".\processing.ps1"
-. ".\logging.ps1"
-. ".\validation.ps1"
+. "$PSScriptRoot\logging.ps1"
+. "$PSScriptRoot\processing.ps1"
+. "$PSScriptRoot\validation.ps1"
 
 # Function that checks if a PowerShell module is already installed and installs it if not.
 # It also imports the module and handles administrator rights, providing a convenient way to ensure the required module is available for use in the script.
