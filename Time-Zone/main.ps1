@@ -1,27 +1,3 @@
-<#
-.SYNOPSIS
-    This script changes the registry to give user access to change location services and set time zone automatically
-    
-.DESCRIPTION
-      This PowerShell script automates the process of changing the registry keys to enable location services and automatic time zone.
-    
-.PARAMETER 
-   
-    
-.NOTES
-    File Name      : main.ps1
-    Author         : Calvin Quint
-    License        : GNU GPL
-    Permission     : You are free to change and re-distribute this script as per the terms of the GPL.
-    
-.LINK
-    GitHub Repository: https://github.com/calvin-quint/Public/tree/main/Time-Zone
-    
-.EMAIL
-    Contact email: github@myqnet.io
-    
-#>
-
 # Registry settings
 $settings = @(
     @{
