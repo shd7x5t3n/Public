@@ -1,3 +1,5 @@
+# Original Script https://www.tbone.se/2024/03/13/deploy-new-teams-with-intune/
+
 # Parameters and defaults
 [string]$NewTeamsInstaller      = ".\teamsbootstrapper.exe"  # Path to the new Teams installer
 [string]$NewTeamsInstallerArgs  = "-p"                         # Arguments for the new Teams installer
