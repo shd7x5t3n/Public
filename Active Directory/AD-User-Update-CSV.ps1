@@ -20,14 +20,15 @@ foreach ($user in $users) {
             # Get the current office name
             $currentOfficeName = $adUser.physicalDeliveryOfficeName
 
-            # Compare and update if necessary
-            if ($currentOfficeName -ne $csvOfficeName) {
-                Write-Host "Updating ${userPrincipalName}: ${currentOfficeName} -> ${csvOfficeName}"
-                
+            # If the CSV value is not already part of the current office name
+            if ($currentOfficeName -notlike "*$csvOfficeName*") {
+                $newOfficeName = "Franklin - $csvOfficeName"
+
                 # Update the physicalDeliveryOfficeName attribute
-                Set-ADUser -Identity $adUser.DistinguishedName -Replace @{physicalDeliveryOfficeName = $csvOfficeName}
+                Write-Host "Updating ${userPrincipalName}: '${currentOfficeName}' -> '${newOfficeName}'"
+                Set-ADUser -Identity $adUser.DistinguishedName -Replace @{physicalDeliveryOfficeName = $newOfficeName}
             } else {
-                Write-Host "${userPrincipalName} is already up-to-date."
+                Write-Host "${userPrincipalName} is already up-to-date with '${currentOfficeName}'."
             }
         } else {
             Write-Warning "User ${userPrincipalName} not found in Active Directory."
