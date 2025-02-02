@@ -2,7 +2,7 @@
 $ssmsRegistryPath64 = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
 
 # Define the minimum required SSMS version
-$minimumVersion = [Version]"20.3.30.0"
+$minimumVersion = [Version]"20.2.30.0"
 
 # Check if SSMS is already installed by looking for its registry entry
 $ssmsInstalled = Get-ItemProperty -Path $ssmsRegistryPath64 -ErrorAction SilentlyContinue | 
