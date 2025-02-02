@@ -13,6 +13,16 @@ if ($ssmsSetupPath) {
 
     # Output the result of the process execution
     Write-Host "Uninstall process completed with exit code: $($process.ExitCode)"
+    
+    # Exit based on the process exit code
+    if ($process.ExitCode -eq 0) {
+        Write-Host "Uninstall successful."
+        exit 0
+    } else {
+        Write-Host "Uninstall failed with exit code: $($process.ExitCode)"
+        exit 1
+    }
 } else {
     Write-Host "SSMS-Setup-ENU.exe not found in Package Cache."
+    exit 1
 }
