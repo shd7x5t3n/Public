@@ -8,7 +8,7 @@ Start-Transcript -Path $logFilePath -Append
 $ssmsRegistryPath64 = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
 
 # Define the minimum required SSMS version
-$minimumVersion = [Version]"20.5.30.0"
+$minimumVersion = [Version]"20.2.30.0"
 
 Write-Output "Checking if SSMS is installed..."
 
