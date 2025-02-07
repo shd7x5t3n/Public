@@ -1,31 +1,20 @@
-# Function to check if Salesforce Data Loader is installed
-function Check-SalesforceDataLoader {
-    # Define the root directory where we will search for the cached 'install.bat' (or any relevant file)
-    $searchRootPath = "C:\"  # You can change this to another root path, such as "D:\" if needed
-    $installBatFileName = "install.bat"
-    
-    # Step 1: Search for the 'install.bat' file recursively within the search root path
-    $cachedInstallBatPath = Get-ChildItem -Path $searchRootPath -Recurse -Filter $installBatFileName -ErrorAction SilentlyContinue |
-        Select-Object -First 1
+# Define the specific directory where we will check for 'install.bat'
+$DataLoaderPath = "C:\Program Files\Salesforce Dataloader\v63.0.0"
+$installBatFilePath = Join-Path -Path $DataLoaderPath -ChildPath "install.bat"
 
-    # Step 2: If install.bat is found
-    if ($cachedInstallBatPath) {
-        Write-Host "'install.bat' found in path: $($cachedInstallBatPath.FullName)"
-        
-        # Check if Data Loader is installed at the expected directory
-        $DataLoaderPath = "C:\Program Files\Salesforce Dataloader\v63.0.0"
-        if (Test-Path $DataLoaderPath) {
-            Write-Host "Salesforce Data Loader is installed at: $DataLoaderPath"
-            exit 0  # Success exit code for Intune (Data Loader is installed)
-        } else {
-            Write-Host "Salesforce Data Loader is not installed at $DataLoaderPath."
-            exit 1  # Error exit code (Data Loader not found)
-        }
+# Step 1: Check if the Salesforce Data Loader directory exists
+if (Test-Path $DataLoaderPath) {
+    Write-Host "Salesforce Data Loader directory found at: $DataLoaderPath"
+
+    # Step 2: Check if 'install.bat' exists within the directory
+    if (Test-Path $installBatFilePath) {
+        Write-Host "'install.bat' found in the Data Loader directory."
+        exit 0  # Success exit code for Intune (both directory and install.bat found)
     } else {
-        Write-Host "'install.bat' not found in the search path: $searchRootPath."
+        Write-Host "'install.bat' not found in the Data Loader directory at: $installBatFilePath"
         exit 1  # Error exit code (install.bat not found)
     }
+} else {
+    Write-Host "Salesforce Data Loader directory not found at: $DataLoaderPath"
+    exit 1  # Error exit code (Data Loader directory not found)
 }
-
-# Call the function to check for Salesforce Data Loader installation
-Check-SalesforceDataLoader
