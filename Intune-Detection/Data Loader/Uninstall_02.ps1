@@ -2,7 +2,7 @@
 $programPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ProgramFilesX86)
 
 # Target Path for Salesforce Dataloader
-$dataloaderPath = Join-Path -Path $programPath -ChildPath 'Salesforce Dataloader\v63.0.0'
+$dataloaderPath = Join-Path -Path $programPath -ChildPath 'Salesforce Dataloader\'
 
 # Path to the install.bat
 $dataloaderBatPath = Join-Path -Path $dataloaderPath -ChildPath 'install.bat'
@@ -10,11 +10,8 @@ $dataloaderBatPath = Join-Path -Path $dataloaderPath -ChildPath 'install.bat'
 # Target path for the Start Menu
 $startMenuPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::CommonStartMenu)
 
-# Name of the Shortcut
-$shortcutName = 'Salesforce Dataloader v63.0.0'
-
-# Path for the shortcut in the Start Menu
-$shortcutPath = Join-Path -Path $startMenuPath -ChildPath ('Programs\Salesforce Dataloader\' + $shortcutName + '.lnk')
+# Path to the entire Salesforce Dataloader folder in Start Menu
+$startMenuFolderPath = Join-Path -Path $startMenuPath -ChildPath 'Programs\Salesforce Dataloader'
 
 # Ensure the script is running with elevated (Administrator) rights
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -22,26 +19,28 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     exit 1  # Intune failure exit code
 }
 
-# Delete the shortcut if it exists
-if (Test-Path -Path $shortcutPath) {
+# Delete the entire Start Menu folder if it exists
+if (Test-Path -Path $startMenuFolderPath) {
     try {
-        Remove-Item -Path $shortcutPath -Force -ErrorAction Stop
-        Write-Host "Shortcut deleted successfully."
+        Remove-Item -Path $startMenuFolderPath -Force -Recurse -ErrorAction Stop
+        Write-Host "Start Menu folder deleted successfully."
     }
     catch {
-        Write-Host "Error: Could not delete the shortcut. $_"
+        Write-Host "Error: Could not delete the Start Menu folder. $_"
         exit 1  # Intune failure exit code
     }
+} else {
+    Write-Host "Start Menu folder not found. Skipping removal."
 }
 
-# Delete the Salesforce Data Loader folder if it exists
+# Delete the Salesforce Data Loader installation folder if it exists
 if (Test-Path -Path $dataloaderPath) {
     try {
         Remove-Item -Path $dataloaderPath -Force -Recurse -ErrorAction Stop
-        Write-Host "Salesforce Data Loader folder deleted successfully."
+        Write-Host "Salesforce Data Loader installation folder deleted successfully."
     }
     catch {
-        Write-Host "Error: Could not delete the Data Loader folder. $_"
+        Write-Host "Error: Could not delete the Data Loader installation folder. $_"
         exit 1  # Intune failure exit code
     }
 } else {
