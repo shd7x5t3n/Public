@@ -15,8 +15,14 @@ $startMenuFolderPath = Join-Path -Path $startMenuPath -ChildPath 'Programs\Sales
 
 # Ensure the script is running with elevated (Administrator) rights
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Host "Error: Script must be run as administrator."
-    exit 1  # Intune failure exit code
+    try {
+        Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+        exit
+    }
+    catch {
+        Write-Host "Error: Could not elevate to administrator. Exiting with code 1."
+        exit 1
+    }
 }
 
 # Delete the entire Start Menu folder if it exists
