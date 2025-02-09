@@ -26,8 +26,8 @@ $Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "Fu
 $Acl.SetAccessRule($Ar)
 Set-Acl -Path $versionFolder -AclObject $Acl
 
-# Path to the dataloader.bat
-$dataloaderBatPath = Join-Path -Path $versionFolder -ChildPath 'dataloader.bat'
+# Path to the install.bat
+$dataloaderBatPath = Join-Path -Path $versionFolder -ChildPath 'install.bat'
 
 # Path to the custom icon
 $iconPath = Join-Path -Path $versionFolder -ChildPath 'dataloader.ico'
