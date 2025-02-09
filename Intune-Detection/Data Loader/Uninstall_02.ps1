@@ -2,7 +2,7 @@
 $programPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ProgramFilesX86)
 
 # Target Path for Salesforce Dataloader
-$dataloaderPath = Join-Path -Path $programPath -ChildPath 'Salesforce Dataloader\'
+$dataloaderPath = Join-Path -Path $programPath -ChildPath 'Salesforce Dataloader'
 
 # Path to the install.bat
 $dataloaderBatPath = Join-Path -Path $dataloaderPath -ChildPath 'install.bat'
