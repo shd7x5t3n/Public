@@ -1,20 +1,65 @@
-# Set the path to the InstallShield Installation Information directory
-$installShieldPath = "C:\Program Files (x86)\InstallShield Installation Information"
+# Define registry paths to search
+$registryPaths = @(
+    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+)
 
-# Locate the setup.exe file associated with Fiery Command WorkStation
-$setupFile = Get-ChildItem -Path $installShieldPath -Recurse -Filter "setup.exe" -ErrorAction SilentlyContinue
+$uninstallString = $null
 
-# Check if the file was found
-if ($setupFile) {
-    Write-Host "Found setup.exe at: $($setupFile.FullName)"
-    
-    # Uninstall Fiery Command WorkStation using Start-Process with the '/removeonly' argument
-    $process = Start-Process $setupFile.FullName -ArgumentList "-runfromtemp -l0x0409 remove -removeonly /quiet /norestart" -Wait -PassThru
+# Search uninstall registry keys
+foreach ($path in $registryPaths) {
+    $subkeys = Get-ChildItem -Path $path -ErrorAction SilentlyContinue
 
-    # Output the result of the process execution
+    foreach ($subkey in $subkeys) {
+        $props = Get-ItemProperty -Path $subkey.PSPath -ErrorAction SilentlyContinue
+        $displayName = $props.DisplayName
+
+        if ($displayName -like "*Fiery Command WorkStation*") {
+            $uninstallString = $props.UninstallString
+            Write-Host "Found uninstall entry for: $displayName"
+            break
+        }
+    }
+
+    if ($uninstallString) { break }
+}
+
+# Exit if not found
+if (-not $uninstallString) {
+    Write-Host "Fiery Command WorkStation not found in uninstall registry keys."
+    exit 1
+}
+
+# Show the raw uninstall string
+Write-Host "Raw UninstallString from registry: $uninstallString"
+
+# Parse the uninstall string safely
+if ($uninstallString -match '^"([^"]+)"\s*(.*)$') {
+    $exe = $matches[1]
+    $args = $matches[2]
+} elseif ($uninstallString -match '^([^\s]+)\s*(.*)$') {
+    $exe = $matches[1]
+    $args = $matches[2]
+} else {
+    Write-Host "Unable to parse uninstall string: $uninstallString"
+    exit 1
+}
+
+# Show parsed executable and arguments
+Write-Host "Parsed executable: $exe"
+Write-Host "Parsed arguments: $args"
+
+# Validate the executable path
+if (-not (Test-Path $exe)) {
+    Write-Host "Uninstaller not found at expected location: $exe"
+    exit 1
+}
+
+# Run the uninstaller
+try {
+    $process = Start-Process -FilePath $exe -ArgumentList $args -Wait -PassThru
     Write-Host "Uninstall process completed with exit code: $($process.ExitCode)"
-    
-    # Exit based on the process exit code
+
     if ($process.ExitCode -eq 0) {
         Write-Host "Uninstall successful."
         exit 0
@@ -22,7 +67,8 @@ if ($setupFile) {
         Write-Host "Uninstall failed with exit code: $($process.ExitCode)"
         exit 1
     }
-} else {
-    Write-Host "setup.exe not found in InstallShield Installation Information."
+}
+catch {
+    Write-Host "Failed to start uninstall process: $_"
     exit 1
 }
