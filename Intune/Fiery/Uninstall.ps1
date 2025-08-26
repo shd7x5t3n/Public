@@ -47,7 +47,13 @@ if ($uninstallString -match '^"([^"]+)"\s*(.*)$') {
 
 # Show parsed executable and arguments
 Write-Host "Parsed executable: $exe"
-Write-Host "Parsed arguments: $args"
+Write-Host "Original arguments: $args"
+
+# Append proper silent uninstall switches
+$additionalArgs = "/clone_wait /hide_progress SILENT"
+$args = "$args $additionalArgs".Trim()
+
+Write-Host "Final arguments: $args"
 
 # Validate the executable path
 if (-not (Test-Path $exe)) {
