@@ -1,0 +1,8 @@
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where AuthenticationRequirement == "multiFactorAuthentication"
+| where Location != "US"
+| where AuthenticationDetails has "MFA requirement satisfied by claim in the token"
+| where AuthenticationDetails has "Previously satisfied"
+| where ConditionalAccessStatus == "notApplied" // optional, depending on environment
+| project TimeGenerated, UserPrincipalName, IPAddress, Location, AppDisplayName, ClientAppUsed, AuthenticationDetails, DeviceDetail
