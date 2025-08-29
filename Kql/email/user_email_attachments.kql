@@ -1,0 +1,3 @@
+EmailEvents
+| where SenderFromAddress contains "$UPN"
+| where AttachmentCount > 0
