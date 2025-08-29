@@ -1,0 +1,4 @@
+SigninLogs
+| mv-expand todynamic(AuthenticationDetails)
+| where AuthenticationDetails.succeeded == true
+    and AuthenticationDetails.authenticationMethod contains "passkey"
