@@ -1,0 +1,10 @@
+CloudAppEvents
+| where TimeGenerated >= ago(15m)
+| where Application contains "Teams"
+| extend Raw = parse_json(RawEventData)
+| mv-expand ep = Raw.ExtraProperties
+| extend ParticipantInfo = parse_json(tostring(Raw.ParticipantInfo))
+| extend EPKey = tostring(ep.Key), EPValue = tostring(ep.Value)
+| extend HasUnauthenticatedUsers = tostring(ParticipantInfo.HasUnauthenticatedUsers)
+| where HasUnauthenticatedUsers == "true"
+| where EPKey == "OsName" and EPValue == "linux"
