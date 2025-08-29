@@ -1,0 +1,4 @@
+SigninLogs 
+| where ConditionalAccessStatus == "failure" 
+| where Status.errorCode == 50125 or Status.errorCode == 50074 or Status.errorCode == 50058 
+| where RiskLevelDuringSignIn in ("medium", "high")
