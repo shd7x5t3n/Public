@@ -1,0 +1,5 @@
+AuditLogs
+| where OperationName contains "Add owner to service principal"
+| where tostring(InitiatedBy) contains "Power Virtual Agents"
+| mv-expand TargetResources
+| extend userPrincipalName = tostring(TargetResources.userPrincipalName)
