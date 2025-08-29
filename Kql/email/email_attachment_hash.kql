@@ -1,0 +1,3 @@
+EmailAttachmentInfo
+| where SHA256 contains "$hash"
+| where NetworkMessageId contains "$NetworkMessageId"
