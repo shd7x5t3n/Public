@@ -1,0 +1,16 @@
+union isfuzzy=true
+    DeviceFileEvents,
+    DeviceProcessEvents
+| where (
+    InitiatingProcessVersionInfoCompanyName in~ (
+        "Wavesor Software",        // Wave Browser
+        "Shift Technologies Inc", // Shift App
+        "OneLaunch"              // OneLaunch
+    )
+    or InitiatingProcessVersionInfoProductName in~ (
+        "Wave Browser",
+        "Shift",
+        "OneLaunch"
+    )
+)
+| where ActionType in~ ("CreateFile", "Run", "Start", "Execute", "ProcessCreated")
