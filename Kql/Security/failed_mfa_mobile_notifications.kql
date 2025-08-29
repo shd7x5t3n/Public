@@ -1,0 +1,7 @@
+SigninLogs
+| where AuthenticationRequirement == "multiFactorAuthentication"
+| where Status !contains "requirement satisfied"
+| where AuthenticationDetails contains "Correct password"
+| where AuthenticationDetails contains '"Mobile app notification","succeeded":false'
+| where Status !contains "success"
+| where Location != "US"
