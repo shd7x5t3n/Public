@@ -1,0 +1,11 @@
+let meetingUrls = dynamic(["teams.microsoft.com/l/meetup-join", "zoom.us"]);
+let targetDomains = dynamic(["otter.ai", "read.ai"]);
+EmailUrlInfo
+| where Url has_any(meetingUrls)
+| join kind=inner (
+    EmailEvents
+    | where RecipientEmailAddress has_any(targetDomains)
+    | project NetworkMessageId, SenderFromAddress, RecipientEmailAddress, Subject, Timestamp
+) on NetworkMessageId
+| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, Url
+| order by Timestamp desc
