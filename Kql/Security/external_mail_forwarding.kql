@@ -1,0 +1,19 @@
+CloudAppEvents
+| where Application contains "Exchange"
+| where ActionType contains "InboxRules"
+| extend OpsProps = parse_json(RawEventData).OperationProperties
+| mv-expand prop = OpsProps
+| where prop.Name == "RuleActions"
+| extend RuleActionsArray = parse_json(tostring(prop.Value))
+| mv-expand actionItem = RuleActionsArray
+| where tostring(actionItem.ActionType) == "Forward"
+| extend RecipientsArray = todynamic(actionItem.Recipients)
+| mv-expand Recipient = RecipientsArray
+| extend RecipientClean = tolower(tostring(Recipient))
+| extend UserIdClean = tolower(tostring(parse_json(RawEventData).UserId))
+| extend UserDomain = tostring(split(UserIdClean, "@")[1])
+| extend RecipientDomain = tostring(split(RecipientClean, "@")[1])
+| where RecipientDomain != UserDomain
+| extend Result = "Forward to External"
+| project TimeGenerated, UserIdClean, RecipientClean, RecipientDomain, Result
+| sort by TimeGenerated desc
