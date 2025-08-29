@@ -1,0 +1,7 @@
+CloudAppEvents
+| where Application contains "Teams"
+| where ISP contains "Amazon"
+| extend ParsedObjects = parse_json(ActivityObjects)
+| mv-expand obj = ParsedObjects
+| extend Role = tostring(obj.Role), Type = tostring(obj.Type)
+| where Role == "Actor" and Type != "User"
