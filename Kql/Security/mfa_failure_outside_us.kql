@@ -1,0 +1,12 @@
+SigninLogs
+| where AuthenticationRequirement == "multiFactorAuthentication"
+| where Location != "US"
+| where tostring(Status) !contains "success"
+| where tostring(AuthenticationDetails) contains "Correct password"
+| extend AuthDetails = parse_json(AuthenticationDetails)
+| mv-expand AuthDetails
+| extend 
+    StepResult = tostring(AuthDetails.authenticationStepResultDetail),
+    StepSucceeded = tostring(AuthDetails.succeeded)
+| where StepSucceeded == "false"
+| where StepResult !has "requirement satisfied"
