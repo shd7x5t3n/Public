@@ -1,0 +1,7 @@
+SigninLogs
+| where Status.errorCode == 0
+    and RiskLevelDuringSignIn == "high"
+    and AuthenticationDetails has "MFA requirement satisfied by claim in the token"
+    and AuthenticationDetails has "Previously satisfied"
+    and (IncomingTokenType == "none" or isnull(IncomingTokenType))
+    and ConditionalAccessStatus == "success"
